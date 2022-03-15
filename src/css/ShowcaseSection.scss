@@ -1,7 +1,16 @@
 .showcase-section {
-    display: grid;
-    grid-column-gap: 10px;
-    grid-row-gap: 0px;
-    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-    justify-content: center;
+    .showcase-section-title {
+        font-size: 2rem;
+        font-weight: 600;
+        color: #8492a6;
+        padding-bottom: 25px;
+    }
+    .showcase-section-list{
+        display: grid;
+        grid-column-gap: 10px;
+        grid-row-gap: 0px;
+        grid-template-columns: repeat(auto-fill, minmax(min(400px, calc(100vw - 20px)), 1fr));
+        justify-content: center;
+        margin-bottom: 30px;
+    }
 }

@@ -1,4 +1,4 @@
-export default () => {
+const getSiteList = () => {
 	// Get all jsons
 	let context = require.context('../site-list', true, /\.(json)$/);
 	let siteList = [];
@@ -23,21 +23,24 @@ export default () => {
 
 	// Sort
 	siteList = siteList.sort((a, b) => {
-		if (a.status == b.status) return a.title.localeCompare(b.title);
+		if ((a.priority ?? 0) !== (b.priority ?? 0)) return ((a.priority ?? 0) < (b.priority ?? 0) ? 1 : -1);
+		if (a.status === b.status) return a.title.localeCompare(b.title);
 		else {
-			const a_level = ["theme-changed", "unknown", "down", "fine"].indexOf(a.status);
-			const b_level = ["theme-changed", "unknown", "down", "fine"].indexOf(b.status);
+			const a_level = ["theme-changed", "invalid", "unknown", "down", "fine"].indexOf(a.status);
+			const b_level = ["theme-changed", "invalid", "unknown", "down", "fine"].indexOf(b.status);
 			return (a_level < b_level ? 1 : -1);
 		}
 	});
 
-	// Filter out "theme-changed" status
-	const siteListThemeChanged = siteList.filter((site) => {
-		return site.status === "theme-changed";
+	// Filter out "fine" status
+	const siteListDown = siteList.filter((site) => {
+		return site.status !== "fine";
 	});
 	siteList = siteList.filter((site) => {
-		return site.status !== "theme-changed";
+		return site.status === "fine";
 	});
 
-	return [siteList, siteListThemeChanged];
+	return [siteList, siteListDown];
 };
+
+export default getSiteList;

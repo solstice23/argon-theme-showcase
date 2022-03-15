@@ -1,21 +1,24 @@
-import logo from "./logo.svg";
 import "./css/App.scss";
 import getSiteList from './sitelist';
+import Header from './Header';
+import Background from './Background';
 import ShowcaseSection from './ShowcaseSection';
+import FloatActionButton from './FloatActionButton';
 
 function App() {
-	const [siteList, siteListThemeChanged] = getSiteList();
+	const [siteList, siteListDown] = getSiteList();
 	console.log(siteList);
 	return (
 		<div className="App">
-			<header className="header">
-				Argon Theme Showcase
-			</header>
+			<Background />
+			<Header />
 			<main>
 				<div className="container">
 					<ShowcaseSection siteList={siteList}></ShowcaseSection>
+					<ShowcaseSection title="已失效站点" siteList={siteListDown}></ShowcaseSection>
 				</div>
 			</main>
+			<FloatActionButton />
 		</div>
 	);
 }

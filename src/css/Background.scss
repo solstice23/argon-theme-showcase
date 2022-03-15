@@ -1,0 +1,9 @@
+#background {
+    background: linear-gradient(150deg, #7795f8 15%, #6772e5 70%, #555abf 94%);
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: clamp(60vh, var(--height), 100vh);
+    z-index: -1;
+}
