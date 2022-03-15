@@ -31,12 +31,12 @@ console.log("\nCapturing screenshots...");
 			delay: 3,
 			userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36 ArgonBot',
 			launchOptions: {args: ['--autoplay-policy=no-user-gesture-required']
-	}}).dest("../status/screenshots");
+	}}).dest("../status/screenshots/");
 
 	for (let site of updateList){
 		browser.src(site.url, ['1920x1080'], {
 			crop: true,
-			filename: '../status/screenshots/' + site.key,
+			filename: site.key,
 			script: `
 				Date.prototype.getHours = () => {
 					return 12;
