@@ -1,0 +1,38 @@
+name: 'Update Argon Releases'
+
+on:
+  push:
+    branches: 
+      - master
+  schedule:
+    - cron: '1 */4 * * *'
+jobs:
+  UpdateSiteStatus:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: 'Set up node 16.x'
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+          cache: 'npm'
+      - name: 'cd into /scripts'
+        run: cd scripts
+      - name: 'Install dependencies'
+        run: npm ci
+      - name: 'Run update site status script'
+        timeout-minutes: 10
+        run: node node update-site-status
+        id: node
+      - name: Commit files
+        run: |
+          git config --local user.email "argontheme@outlook.com"
+          git config --local user.name "argon-theme-release-push"
+          git add -A
+          git commit -m "Update site status" -a
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.TOKEN_ARGON_BOT }}
