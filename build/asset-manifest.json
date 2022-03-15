@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/static/css/main.2077acdc.css",
+    "main.js": "/static/js/main.f8d1783a.js",
+    "static/js/787.ef213cbd.chunk.js": "/static/js/787.ef213cbd.chunk.js",
+    "static/media/argon_demo_solstice23_top.png": "/static/media/argon_demo_solstice23_top.a9cee704b392f9ba8332.png",
+    "static/media/solstice23_top.png": "/static/media/solstice23_top.d20cb50bea9770b46ed9.png",
+    "static/media/no-preview.png": "/static/media/no-preview.e8891a37ca31dd7827fa.png",
+    "static/media/argon_demo_solstice23_top.png?width=640&height=360&quality=100": "/static/media/argon_demo_solstice23_top.1894d7c4357f0c711676.png",
+    "static/media/solstice23_top.png?width=640&height=360&quality=100": "/static/media/solstice23_top.b08b50565bd237f61ca0.png",
+    "index.html": "/index.html",
+    "main.2077acdc.css.map": "/static/css/main.2077acdc.css.map",
+    "main.f8d1783a.js.map": "/static/js/main.f8d1783a.js.map",
+    "787.ef213cbd.chunk.js.map": "/static/js/787.ef213cbd.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.2077acdc.css",
+    "static/js/main.f8d1783a.js"
+  ]
+}
