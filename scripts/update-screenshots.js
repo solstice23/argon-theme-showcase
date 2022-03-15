@@ -1,54 +1,37 @@
-import fs from 'fs';
-import path from 'path';
+import {getSiteListWithStatus, updateSiteStatus} from './sitelist.js';
 import Pageres from 'pageres';
 
-const getSiteList = () => {
-	const siteList = fs.readdirSync(path.resolve(process.cwd(), '../site-list')).filter((file) => {
-		return file.endsWith('.json');
-	}).map((file) => {
-		return {
-			...JSON.parse(fs.readFileSync(path.join(process.cwd(), "../site-list/" + file)), 'utf8'),
-			"json-file-name": file,
-			"key": file.substring(0, file.length - 5)
-		};
-	});
-	return siteList;
-}
-
-const getSiteStatus = (siteList) => {
-	const statusKeys = fs.readdirSync(path.resolve(process.cwd(), '../status')).filter((file) => {
-		return file.endsWith('.json');
-	});
-	for (let i in siteList) {
-		if (statusKeys.includes(siteList[i]["json-file-name"])) {
-			siteList[i] = {...siteList[i], ...JSON.parse(fs.readFileSync(path.join(process.cwd(), "../status/" + siteList[i]["json-file-name"])), 'utf8') };
-		}else{
-			siteList[i].status = "unknown";
-		}
-	}
-	return siteList;
-}
-
+process.on('unhandledRejection', (reason, p) => {
+	console.log('Promise: ', p, 'Reason: ', reason)
+	process.exit(1);
+})
 
 //Get site list
-let siteList = getSiteList();
-siteList = getSiteStatus(siteList);
+let siteList = getSiteListWithStatus();
+
+console.log(`Get ${siteList.length} sites.\n`);
 
 let updateList = [];
 
+console.log("Update list:");
+
 for (let site of siteList){
-	if (new Date() - site["screenshot-updated"] > 86400 && site.status != "down") {
+	if (new Date() - new Date(site["screenshot-updated"]) > 86400 * 1000 && site.status != "down") {
 		updateList.push(site);
+		console.log(`${site.title} (${site.url})`);
 	}
 }
+
+
+console.log("\nCapturing screenshots...");
 
 //Capture
 (async () => {
 	let browser = new Pageres({
-			delay: 2,
+			delay: 3,
 			userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36 ArgonBot',
 			launchOptions: {args: ['--autoplay-policy=no-user-gesture-required']
-	}}).dest("../screenshots");
+	}}).dest("../status/screenshots");
 
 	for (let site of updateList){
 		browser.src(site.url, ['1920x1080'], {
@@ -58,14 +41,18 @@ for (let site of siteList){
 				Date.prototype.getHours = () => {
 					return 12;
 				};
-				document.documentElement.classList.remove("darkmode")
-			;`
+				if ((darkmodeAutoSwitch || "time") != "alwayson") {
+					document.documentElement.classList.remove("darkmode")
+				}
+			;`,
+			delay: 2,
 		});
-		site["screenshot-updated"] = new Date();
-		fs.writeFileSync(path.join(process.cwd(), "../status/" + site["json-file-name"]), JSON.stringify(site, null, '\t'));
+		updateSiteStatus(site.key, {
+			"screenshot-updated": new Date()
+		});
 	}
 
 	await browser.run();
 
-	console.log('Finished generating screenshots!');
+	console.log('Finished capturing screenshots!');
 })();
