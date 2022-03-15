@@ -18,14 +18,14 @@ jobs:
         with:
           node-version: 16.x
           cache: 'npm'
-      - name: 'cd into /scripts'
-        run: cd scripts
       - name: 'Install dependencies'
         run: npm ci
+        working-directory: scripts
       - name: 'Run update site status script'
         timeout-minutes: 10
-        run: node node update-site-status
+        run: node update-site-status
         id: node
+        working-directory: scripts
       - name: Commit files
         run: |
           git config --local user.email "argontheme@outlook.com"
