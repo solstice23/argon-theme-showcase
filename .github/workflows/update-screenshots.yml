@@ -25,6 +25,9 @@ jobs:
         timeout-minutes: 10
         run: node update-screenshots
         id: node
+        env:
+          UA_KEY: ${{ secrets.UA_KEY }}
+          UA_IV: ${{ secrets.UA_IV }}
         working-directory: scripts
       - name: Commit files
         run: |

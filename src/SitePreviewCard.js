@@ -5,7 +5,10 @@ const getScreenshot = (key) => {
 	try {
 		require(`../status/screenshots/${key}.png`)
 	} catch {
-		return require(`./static/no-preview.png`);
+		return [
+			require(`webpack-image-resize-loader!./static/no-preview.png?width=640&height=360&quality=100`),
+			require(`webpack-image-resize-loader!./static/no-preview.png?width=96&height=54&quality=60`)
+		];
 	}
 	return [
 		require(`webpack-image-resize-loader!../status/screenshots/${key}.png?width=640&height=360&quality=100`),

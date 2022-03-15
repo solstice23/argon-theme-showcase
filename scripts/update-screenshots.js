@@ -1,4 +1,5 @@
 import {getSiteListWithStatus, updateSiteStatus} from './sitelist.js';
+import {calcUAByDomain} from './calc-ua.js';
 import Pageres from 'pageres';
 
 process.on('unhandledRejection', (reason, p) => {
@@ -29,7 +30,7 @@ console.log("\nCapturing screenshots...");
 (async () => {
 	let browser = new Pageres({
 			delay: 3,
-			userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36 ArgonBot',
+			userAgent: calcUAByDomain(site.url),
 			launchOptions: {args: ['--autoplay-policy=no-user-gesture-required']
 	}}).dest("../status/screenshots/");
 

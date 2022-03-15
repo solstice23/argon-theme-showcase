@@ -1,5 +1,6 @@
 import got from 'got';
 import cheerio from 'cheerio';
+import {calcUAByDomain} from './calc-ua.js';
 import {getSiteListWithStatus, updateSiteStatus, deleteUnusedJson} from './sitelist.js';
 
 const checkThemeIsArgon = (html) => {
@@ -39,7 +40,7 @@ const checkSite = async (site) => {
 	try {
 		response = await got(site.url, {
 			headers: {
-				'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36 ArgonBot'
+				'User-Agent': calcUAByDomain(site.url),
 			},
 			method: 'GET',
 			timeout: 5000
@@ -96,7 +97,7 @@ console.log(`Get ${siteList.length} sites.\n`);
 //Check every site
 for (let site of siteList){
 	if (new Date() - new Date(site['status-updated']) > 1800 * 1000){
-		await checkSite(site);
+		//await checkSite(site);
 	}
 }
 
