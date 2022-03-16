@@ -63,7 +63,7 @@ console.log("\nCapturing screenshots...");
 			.catch(error => console.log(error.message ?? error))
 			.then(() => {
 				console.log(`✅ ${site.title} (${site.url}) screenshot updated.`);
-				updateSiteStatus(site.key, "screenshot-updated", new Date());
+				updateSiteStatus(site.key, {"screenshot-updated": new Date()});
 			});
 	}
 

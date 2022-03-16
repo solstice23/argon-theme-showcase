@@ -97,7 +97,7 @@ console.log(`Get ${siteList.length} sites.\n`);
 //Check every site
 for (let site of siteList){
 	if (new Date() - new Date(site['status-updated']) > 1800 * 1000){
-		//await checkSite(site);
+		await checkSite(site);
 	}
 }
 
