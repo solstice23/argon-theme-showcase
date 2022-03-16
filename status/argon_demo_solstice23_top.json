@@ -1,7 +1,12 @@
 {
 	"status": "fine",
+<<<<<<< HEAD
 	"status-updated": "2022-03-16T03:15:05.825Z",
 	"screenshot-updated": "2022-03-16T02:31:02.923Z",
+=======
+	"status-updated": "2022-03-16T03:23:54.720Z",
+	"screenshot-updated": "2022-03-15T16:44:24.335Z",
+>>>>>>> b6a0bbf8fe9770cccd7514143bdc7d9864722f45
 	"info": {
 		"version": "1.3.4",
 		"columns": 2,
