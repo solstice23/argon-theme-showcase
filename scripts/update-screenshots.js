@@ -48,7 +48,9 @@ console.log("\nCapturing screenshots...");
 			;`,
 			delay: 3,
 		});
-		await browser.run().catch(error => console.log(error.message)).then(() => {
+		await browser.run()
+		.catch(error => console.log(error.message))
+		.then(() => {
 			console.log(`✅ ${site.title} (${site.url}) screenshot updated.`);
 			updateSiteStatus(site.key, "screenshot-updated", new Date());
 		});
