@@ -17,7 +17,7 @@ let updateList = [];
 console.log("Update list:");
 
 for (let site of siteList){
-	if (new Date() - new Date(site["screenshot-updated"]) > 86400 * 1000 && site.status != "down") {
+	if (new Date() - new Date(site["screenshot-updated"]) > 0* 86400 * 1000 && site.status != "down") {
 		updateList.push(site);
 		console.log(`${site.title} (${site.url})`);
 	}
@@ -28,12 +28,12 @@ console.log("\nCapturing screenshots...");
 
 //Capture
 (async () => {
-	let browser = new Pageres({
-			delay: 3,
-			launchOptions: {args: ['--autoplay-policy=no-user-gesture-required']
-	}}).dest("../status/screenshots/");
 
 	for (let site of updateList){
+		let browser = new Pageres({
+				delay: 3,
+				launchOptions: {args: ['--autoplay-policy=no-user-gesture-required']
+		}}).dest("../status/screenshots/");
 		browser.src(site.url, ['1920x1080'], {
 			crop: true,
 			filename: site.key,
@@ -48,12 +48,12 @@ console.log("\nCapturing screenshots...");
 			;`,
 			delay: 3,
 		});
-		updateSiteStatus(site.key, {
-			"screenshot-updated": new Date()
+		await browser.run().catch(error => console.log(error.message)).then(() => {
+			console.log(`✅ ${site.title} (${site.url}) screenshot updated.`);
+			updateSiteStatus(site.key, "screenshot-updated", new Date());
 		});
 	}
 
-	await browser.run();
-
 	console.log('Finished capturing screenshots!');
+	process.exit(0);
 })();
