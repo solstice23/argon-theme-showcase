@@ -2,6 +2,17 @@ import {getSiteListWithStatus, updateSiteStatus} from './sitelist.js';
 import {calcUAByDomain} from './calc-ua.js';
 import Pageres from 'pageres';
 
+const withTimeout = (millis, promise) => {
+    const timeout = new Promise((resolve, reject) =>
+        setTimeout(
+            () => reject(`Timed out after ${millis} ms.`),
+            millis));
+    return Promise.race([
+        promise,
+        timeout
+    ]);
+};
+
 process.on('unhandledRejection', (reason, p) => {
 	console.log('Promise: ', p, 'Reason: ', reason)
 	process.exit(1);
@@ -48,8 +59,8 @@ console.log("\nCapturing screenshots...");
 			;`,
 			delay: 3,
 		});
-		await browser.run()
-			.catch(error => console.log(error.message))
+		await withTimeout(30000, browser.run())
+			.catch(error => console.log(error.message ?? error))
 			.then(() => {
 				console.log(`✅ ${site.title} (${site.url}) screenshot updated.`);
 				updateSiteStatus(site.key, "screenshot-updated", new Date());
