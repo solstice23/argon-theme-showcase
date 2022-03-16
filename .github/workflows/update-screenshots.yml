@@ -2,12 +2,13 @@ name: 'Update Screenshots'
 
 on:
   workflow_dispatch:
-  pull_request:
+  push:
     branches: [ master ]
   schedule:
     - cron: '0 0 12 * *'
 jobs:
   UpdateSiteStatus:
+    if: (github.event_name == 'pull_request' && github.event.pull_request.merged == true) || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -27,12 +28,12 @@ jobs:
         id: node
         env:
           UA_KEY: ${{ secrets.UA_KEY }}
-          UA_IV: ${{ secrets.UA_IV }}
         working-directory: scripts
       - name: Commit files
         run: |
           git config --local user.email "argontheme@outlook.com"
           git config --local user.name "argon-theme-release-push"
+          git pull --rebase origin master
           git add -A
           git commit -m "Update screenshots" -a
       - name: Push changes

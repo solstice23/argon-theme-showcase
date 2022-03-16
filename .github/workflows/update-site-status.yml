@@ -29,12 +29,12 @@ jobs:
         id: node
         env:
           UA_KEY: ${{ secrets.UA_KEY }}
-          UA_IV: ${{ secrets.UA_IV }}
         working-directory: scripts
       - name: Commit files
         run: |
           git config --local user.email "argontheme@outlook.com"
           git config --local user.name "argon-theme-release-push"
+          git pull --rebase origin master
           git add -A
           git commit -m "Update site status" -a
       - name: Push changes
