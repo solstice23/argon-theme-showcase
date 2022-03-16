@@ -33,9 +33,9 @@ jobs:
         run: |
           git config --local user.email "argontheme@outlook.com"
           git config --local user.name "argon-theme-release-push"
-          git pull --rebase origin master
           git add -A
           git commit -m "Update screenshots" -a
+          git pull --rebase origin master
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
