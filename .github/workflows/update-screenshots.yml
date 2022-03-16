@@ -2,13 +2,13 @@ name: 'Update Screenshots'
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ master ]
+  pull_request:
+    types: [closed]
   schedule:
     - cron: '0 0 12 * *'
 jobs:
   UpdateSiteStatus:
-    if: (github.event_name == 'pull_request' && github.event.pull_request.merged == true) || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    if: (github.event_name == 'pull_request' && github.event.pull_request.merged) || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: windows-latest
     timeout-minutes: 10
     steps:
