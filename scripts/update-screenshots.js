@@ -17,7 +17,7 @@ let updateList = [];
 console.log("Update list:");
 
 for (let site of siteList){
-	if (new Date() - new Date(site["screenshot-updated"]) > 0* 86400 * 1000 && site.status != "down") {
+	if (new Date() - new Date(site["screenshot-updated"]) > 86400 * 1000 && site.status != "down") {
 		updateList.push(site);
 		console.log(`${site.title} (${site.url})`);
 	}
@@ -49,11 +49,11 @@ console.log("\nCapturing screenshots...");
 			delay: 3,
 		});
 		await browser.run()
-		.catch(error => console.log(error.message))
-		.then(() => {
-			console.log(`✅ ${site.title} (${site.url}) screenshot updated.`);
-			updateSiteStatus(site.key, "screenshot-updated", new Date());
-		});
+			.catch(error => console.log(error.message))
+			.then(() => {
+				console.log(`✅ ${site.title} (${site.url}) screenshot updated.`);
+				updateSiteStatus(site.key, "screenshot-updated", new Date());
+			});
 	}
 
 	console.log('Finished capturing screenshots!');
