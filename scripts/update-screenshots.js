@@ -30,7 +30,6 @@ console.log("\nCapturing screenshots...");
 (async () => {
 	let browser = new Pageres({
 			delay: 3,
-			userAgent: calcUAByDomain(site.url),
 			launchOptions: {args: ['--autoplay-policy=no-user-gesture-required']
 	}}).dest("../status/screenshots/");
 
@@ -38,6 +37,7 @@ console.log("\nCapturing screenshots...");
 		browser.src(site.url, ['1920x1080'], {
 			crop: true,
 			filename: site.key,
+			userAgent: calcUAByDomain(site.url),
 			script: `
 				Date.prototype.getHours = () => {
 					return 12;
@@ -46,7 +46,7 @@ console.log("\nCapturing screenshots...");
 					document.documentElement.classList.remove("darkmode")
 				}
 			;`,
-			delay: 2,
+			delay: 3,
 		});
 		updateSiteStatus(site.key, {
 			"screenshot-updated": new Date()
