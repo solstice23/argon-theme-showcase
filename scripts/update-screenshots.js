@@ -59,13 +59,16 @@ console.log("\nCapturing screenshots...");
 			;`,
 			delay: 3,
 		});
+		let success = true;
 		await withTimeout(30000, browser.run())
-			.catch(error => console.log(error.message ?? error))
+			.catch(error => {console.log(error.message ?? error); success = false;})
 			.then(() => {
 				console.log(`✅ ${site.title} (${site.url}) screenshot updated.`);
-				updateSiteStatus(site.key, {
-					"screenshot-updated": new Date()
-				});
+				if (success){
+					updateSiteStatus(site.key, {
+						"screenshot-updated": new Date()
+					});
+				}
 			});
 	}
 
