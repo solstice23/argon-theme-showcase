@@ -47,23 +47,23 @@ const checkSite = async (site) => {
 		});
 	} catch (error) {
 		//console.log(error);
-		if (['ENOTFOUND', 'ERR_TLS_CERT_ALTNAME_INVALID'].includes(error.code) || (error.response.statusCode ?? 0) == 403 || (error.response.statusCode ?? 0) == 404) {
-			console.log(`❌ ${site.title} (${site.url}) is invalid.`, error.code ?? error.response.statusCode);
+		if (['ENOTFOUND', 'ERR_TLS_CERT_ALTNAME_INVALID'].includes(error.code) || (error?.response?.statusCode ?? 0) == 403 || (error?.response?.statusCode ?? 0) == 404) {
+			console.log(`❌ ${site.title} (${site.url}) is invalid.`, error.code ?? error?.response?.statusCode);
 			updateSiteStatus(site.key, {
 				"status": "invalid",
 				"status-updated": new Date()
 			});
 			return;
 		}
-		if (['ESOCKETTIMEDOUT', 'ECONNREFUSED', 'ECONNRESET', 'EHOSTUNREACH', 'ENETUNREACH', 'ETIMEDOUT'].includes(error.code) || (error.response.statusCode ?? 0) >= 500) {
-			console.log(`❌ ${site.title} (${site.url}) is down.`, error.code ?? error.response.statusCode);
+		if (['ESOCKETTIMEDOUT', 'ECONNREFUSED', 'ECONNRESET', 'EHOSTUNREACH', 'ENETUNREACH', 'ETIMEDOUT'].includes(error.code) || (error?.response?.statusCode ?? 0) >= 500) {
+			console.log(`❌ ${site.title} (${site.url}) is down.`, error.code ?? error?.response?.statusCode);
 			updateSiteStatus(site.key, {
 				"status": "down",
 				"status-updated": new Date()
 			});
 			return;
 		}
-		console.log(`❌ ${site.title} (${site.url}) is down.`, error.code ?? error.response.statusCode);
+		console.log(`❌ ${site.title} (${site.url}) is down.`, error.code ?? error?.response?.statusCode);
 		updateSiteStatus(site.key, {
 			"status": "down",
 			"status-updated": new Date()
