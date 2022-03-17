@@ -3,6 +3,7 @@ name: Build frontend
 on:
   #push:
   #  branches: [ master ]
+  workflow_dispatch:
   workflow_run:
     workflows: ["Update Site Status"]
     types:
