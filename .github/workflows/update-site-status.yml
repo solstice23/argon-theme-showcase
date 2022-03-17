@@ -33,7 +33,7 @@ jobs:
       - name: Commit files
         run: |
           git config --local user.email "argontheme@outlook.com"
-          git config --local user.name "argon-theme-release-push"
+          git config --local user.name "argon-theme-bot"
           git add -A
           git commit -m "Update site status" -a
           git pull --rebase origin master

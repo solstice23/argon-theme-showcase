@@ -2,8 +2,8 @@ name: 'Update Screenshots'
 
 on:
   workflow_dispatch:
-  pull_request:
-    types: [closed]
+  #pull_request:
+  #  types: [closed]
   schedule:
     - cron: '0 0 12 * *'
 jobs:
@@ -32,7 +32,7 @@ jobs:
       - name: Commit files
         run: |
           git config --local user.email "argontheme@outlook.com"
-          git config --local user.name "argon-theme-release-push"
+          git config --local user.name "argon-theme-bot"
           git add -A
           git commit -m "Update screenshots" -a
           git pull --rebase origin master
