@@ -29,6 +29,9 @@ const getExtraInfo = (html) => {
 	}else{
 		extraInfo.columns = 2;
 	}
+	//Waterflow
+	const WaterflowColumns = (html.match(/waterflow_columns: ?"(.*?)",/) ?? [])[1] ?? '1';
+	extraInfo.waterflow = WaterflowColumns;
 	//Theme color
 	extraInfo['themecolor'] = $('meta[name="theme-color"]').attr('content') ?? '#5e72e4';	
 	return extraInfo;
