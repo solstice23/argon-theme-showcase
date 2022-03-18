@@ -7,6 +7,7 @@
     "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^13.5.0",
     "normalize.css": "^8.0.1",
+    "preval.macro": "^5.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-progressive-image": "^0.6.0",
