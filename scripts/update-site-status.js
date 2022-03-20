@@ -37,8 +37,15 @@ const getExtraInfo = (html) => {
 	return extraInfo;
 }
 
-const checkSite = async (site) => {
-	console.log(`⌛ Checking ${site.title} (${site.url})`);
+const checkSite = async (site, tryTime = 1) => {
+	if (tryTime > 3) {
+		return;
+	}
+	if (tryTime == 1) {
+		console.log(`⌛ Checking ${site.title} (${site.url})`);
+	}else{
+		console.log(`⌛ Rechecking ${site.title} (${site.url})`);
+	}
 	let response;
 	try {
 		response = await got(site.url, {
@@ -64,6 +71,7 @@ const checkSite = async (site) => {
 				"status": "down",
 				"status-updated": new Date()
 			});
+			if ((error?.response?.statusCode ?? 0) != 503) checkSite(site, tryTime + 1);
 			return;
 		}
 		console.log(`❌ ${site.title} (${site.url}) is down.`, error.code ?? error?.response?.statusCode);
