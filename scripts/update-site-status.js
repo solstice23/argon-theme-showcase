@@ -71,7 +71,7 @@ const checkSite = async (site, tryTime = 1) => {
 				"status": "down",
 				"status-updated": new Date()
 			});
-			if ((error?.response?.statusCode ?? 0) != 503) checkSite(site, tryTime + 1);
+			if ((error?.response?.statusCode ?? 0) != 503) await checkSite(site, tryTime + 1);
 			return;
 		}
 		console.log(`❌ ${site.title} (${site.url}) is down.`, error.code ?? error?.response?.statusCode);
