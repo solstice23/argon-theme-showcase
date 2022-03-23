@@ -36,3 +36,5 @@ jobs:
         publish_dir: ./build
         cname: argon-showcase.solstice23.top
         force_orphan: true
+        user_name: 'github-actions[bot]'
+        user_email: 'github-actions[bot]@users.noreply.github.com'
