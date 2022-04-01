@@ -5,7 +5,7 @@ on:
   #pull_request:
   #  types: [closed]
   schedule:
-    - cron: '0 0 12 * *'
+    - cron: '1 12 * * *'
 jobs:
   UpdateSiteStatus:
     if: (github.event_name == 'pull_request' && github.event.pull_request.merged) || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
