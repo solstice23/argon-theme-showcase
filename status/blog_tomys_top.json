@@ -1,9 +1,9 @@
 {
 	"status": "fine",
-	"status-updated": "2022-03-31T20:19:44.569Z",
+	"status-updated": "2022-04-01T00:36:15.115Z",
 	"screenshot-updated": "2022-04-01T00:29:55.909Z",
 	"info": {
-		"version": "1.3.4",
+		"version": "1.3.5",
 		"columns": 3,
 		"waterflow": "1",
 		"themecolor": "#00dddd"
