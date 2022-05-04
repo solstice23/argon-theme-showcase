@@ -3,6 +3,7 @@ import getSiteList from './sitelist';
 import Header from './Header';
 import Background from './Background';
 import ShowcaseSection from './ShowcaseSection';
+import Footer from './Footer';
 import FloatActionButton from './FloatActionButton';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
 					<ShowcaseSection title="已失效站点" siteList={siteListDown}></ShowcaseSection>
 				</div>
 			</main>
+			<Footer siteCount={[...siteList, ...siteListDown].length}/>
 			<FloatActionButton />
 		</div>
 	);

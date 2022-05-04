@@ -1,8 +1,9 @@
 name: Build frontend
 
 on:
-  push:
-    branches: [ master ]
+  #push:
+  #  branches: [ master ]
+  workflow_dispatch:
   workflow_run:
     workflows: ["Update Site Status"]
     types:
@@ -31,7 +32,9 @@ jobs:
     - name: Deploy to gh-pages
       uses: peaceiris/actions-gh-pages@v3
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ secrets.TOKEN_ARGON_BOT }}
         publish_dir: ./build
         cname: argon-showcase.solstice23.top
         force_orphan: true
+        user_name: 'github-actions[bot]'
+        user_email: 'github-actions[bot]@users.noreply.github.com'

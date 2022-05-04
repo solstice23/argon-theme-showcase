@@ -29,13 +29,23 @@ const getExtraInfo = (html) => {
 	}else{
 		extraInfo.columns = 2;
 	}
+	//Waterflow
+	const WaterflowColumns = (html.match(/waterflow_columns: ?"(.*?)",/) ?? [])[1] ?? '1';
+	extraInfo.waterflow = WaterflowColumns;
 	//Theme color
 	extraInfo['themecolor'] = $('meta[name="theme-color"]').attr('content') ?? '#5e72e4';	
 	return extraInfo;
 }
 
-const checkSite = async (site) => {
-	console.log(`⌛ Checking ${site.title} (${site.url})`);
+const checkSite = async (site, tryTime = 1) => {
+	if (tryTime > 3) {
+		return;
+	}
+	if (tryTime == 1) {
+		console.log(`⌛ Checking ${site.title} (${site.url})`);
+	}else{
+		console.log(`⌛ Rechecking ${site.title} (${site.url})`);
+	}
 	let response;
 	try {
 		response = await got(site.url, {
@@ -47,23 +57,24 @@ const checkSite = async (site) => {
 		});
 	} catch (error) {
 		//console.log(error);
-		if (['ENOTFOUND', 'ERR_TLS_CERT_ALTNAME_INVALID'].includes(error.code) || (error.response.statusCode ?? 0) == 403 || (error.response.statusCode ?? 0) == 404) {
-			console.log(`❌ ${site.title} (${site.url}) is invalid.`, error.code ?? error.response.statusCode);
+		if (['ENOTFOUND', 'ERR_TLS_CERT_ALTNAME_INVALID'].includes(error.code) || (error?.response?.statusCode ?? 0) == 403 || (error?.response?.statusCode ?? 0) == 404) {
+			console.log(`❌ ${site.title} (${site.url}) is invalid.`, error.code ?? error?.response?.statusCode);
 			updateSiteStatus(site.key, {
 				"status": "invalid",
 				"status-updated": new Date()
 			});
 			return;
 		}
-		if (['ESOCKETTIMEDOUT', 'ECONNREFUSED', 'ECONNRESET', 'EHOSTUNREACH', 'ENETUNREACH', 'ETIMEDOUT'].includes(error.code) || (error.response.statusCode ?? 0) >= 500) {
-			console.log(`❌ ${site.title} (${site.url}) is down.`, error.code ?? error.response.statusCode);
+		if (['ESOCKETTIMEDOUT', 'ECONNREFUSED', 'ECONNRESET', 'EHOSTUNREACH', 'ENETUNREACH', 'ETIMEDOUT'].includes(error.code) || (error?.response?.statusCode ?? 0) >= 500) {
+			console.log(`❌ ${site.title} (${site.url}) is down.`, error.code ?? error?.response?.statusCode);
 			updateSiteStatus(site.key, {
 				"status": "down",
 				"status-updated": new Date()
 			});
+			if ((error?.response?.statusCode ?? 0) != 503) await checkSite(site, tryTime + 1);
 			return;
 		}
-		console.log(`❌ ${site.title} (${site.url}) is down.`, error.code ?? error.response.statusCode);
+		console.log(`❌ ${site.title} (${site.url}) is down.`, error.code ?? error?.response?.statusCode);
 		updateSiteStatus(site.key, {
 			"status": "down",
 			"status-updated": new Date()
@@ -97,7 +108,7 @@ console.log(`Get ${siteList.length} sites.\n`);
 //Check every site
 for (let site of siteList){
 	if (new Date() - new Date(site['status-updated']) > 1800 * 1000){
-		//await checkSite(site);
+		await checkSite(site);
 	}
 }
 

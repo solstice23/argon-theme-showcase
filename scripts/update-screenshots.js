@@ -2,6 +2,17 @@ import {getSiteListWithStatus, updateSiteStatus} from './sitelist.js';
 import {calcUAByDomain} from './calc-ua.js';
 import Pageres from 'pageres';
 
+const withTimeout = (millis, promise) => {
+    const timeout = new Promise((resolve, reject) =>
+        setTimeout(
+            () => reject(`Timed out after ${millis} ms.`),
+            millis));
+    return Promise.race([
+        promise,
+        timeout
+    ]);
+};
+
 process.on('unhandledRejection', (reason, p) => {
 	console.log('Promise: ', p, 'Reason: ', reason)
 	process.exit(1);
@@ -28,16 +39,16 @@ console.log("\nCapturing screenshots...");
 
 //Capture
 (async () => {
-	let browser = new Pageres({
-			delay: 3,
-			userAgent: calcUAByDomain(site.url),
-			launchOptions: {args: ['--autoplay-policy=no-user-gesture-required']
-	}}).dest("../status/screenshots/");
 
 	for (let site of updateList){
+		let browser = new Pageres({
+				delay: 3,
+				launchOptions: {args: ['--autoplay-policy=no-user-gesture-required']
+		}}).dest("../status/screenshots/");
 		browser.src(site.url, ['1920x1080'], {
 			crop: true,
 			filename: site.key,
+			userAgent: calcUAByDomain(site.url),
 			script: `
 				Date.prototype.getHours = () => {
 					return 12;
@@ -46,14 +57,21 @@ console.log("\nCapturing screenshots...");
 					document.documentElement.classList.remove("darkmode")
 				}
 			;`,
-			delay: 2,
+			delay: 3,
 		});
-		updateSiteStatus(site.key, {
-			"screenshot-updated": new Date()
-		});
+		let success = true;
+		await withTimeout(30000, browser.run())
+			.catch(error => {console.log(error.message ?? error); success = false;})
+			.then(() => {
+				console.log(`✅ ${site.title} (${site.url}) screenshot updated.`);
+				if (success){
+					updateSiteStatus(site.key, {
+						"screenshot-updated": new Date()
+					});
+				}
+			});
 	}
 
-	await browser.run();
-
 	console.log('Finished capturing screenshots!');
+	process.exit(0);
 })();

@@ -36,6 +36,7 @@ const SitePreviewCard = (props) => {
 				{props.site.status === "theme-changed" && <Tag background="#f9d3dd" color="#f80031" text="主题已更换" title="主题似乎已不是 Argon"/>}
 				{props.site?.info?.version && <Tag text={"v" + props.site?.info?.version} title="主题版本"/>}
 				{props.site?.info?.columns && <Tag text={["单栏", "双栏", "三栏"][props.site?.info?.columns - 1]} title="页面布局"/>}
+				{(props.site?.info?.waterflow ?? "1") !== "1" && <Tag text="瀑布流" title="文章列表布局"/>}
 			</div>
 		</div>
 	</div>;
