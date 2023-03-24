@@ -1,11 +1,11 @@
 {
 	"status": "fine",
-	"status-updated": "2022-12-18T01:18:08.960Z",
+	"status-updated": "2023-03-24T08:19:17.304Z",
 	"screenshot-updated": "2022-05-10T12:22:02.305Z",
 	"info": {
 		"version": "1.3.5",
 		"columns": 2,
 		"waterflow": "1",
-		"themecolor": "#8e8cd8"
+		"themecolor": "#5e72e4"
 	}
 }
