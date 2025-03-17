@@ -1,5 +1,10 @@
 {
-	"status": "invalid",
-	"status-updated": "2025-03-17T01:46:51.026Z",
-	"screenshot-updated": "1970-01-01T00:00:00.000Z"
+	"status": "fine",
+	"status-updated": "2025-03-17T04:30:43.181Z",
+	"screenshot-updated": "1970-01-01T00:00:00.000Z",
+	"info": {
+		"columns": 3,
+		"waterflow": "1",
+		"themecolor": "#5e72e4"
+	}
 }
